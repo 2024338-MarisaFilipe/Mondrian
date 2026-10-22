@@ -22,9 +22,46 @@ Retângulo azul
 ##### Facilitar a lógica Nº2
 Para criar as linhas tem que se ter o stroke, strokweight e a line. A stroke serve para a cor, a strokweight para grossura das linhas e a line para as coordenadas da posição da linha. Ao acessar as referências do P5.js novamente https://p5js.org/reference/p5/line/ anotei que a linha tem a syntax line(x1, y1, x2, y2) podendo ter também o z se tivesse num terceiro plano. Sendo assim, é praticamente a mesma lógica do retângulo, é só pensar que a linha tem dois" pontos" essencialmente, o x é a largura, a ponta esquerda da linha é o x1 e o da direita é x2, da mesma forma que o y é a altura, mesma lógica. As linhas por si são mais fáceis de pensar como coordenadas na geometria. Pus o stroke como 51 por ser a cor que quero e fui mudando o strokweight antes das linhas para mudar a grossura e aplicar sempre que tenho uma grossura nova numa linha diferente para ser o valor atríbuido só a essas linhas especificamente.
 
+##### Linhas - Medidas
+
+Organizei a ordem das linhas pela grossura que partilham para ser mais eficiente.
+
 LINHA 1 - VERTICAL CENTRAL
 Esta linha tem um strokeweight (grossura) de 12.
 A primeira linha é vertical e está mais no centro da composição logo x1(width/2-33) e como é vertical o y1(0). Nesta parte é que se difere mais do retângulo, o x2 tem que ter o mesmo valor que x1 se não a linha não será vertical, se fosse horizontal seria a lógica ao contrário com o y1 e y2.  
 
-//LINHA 2 - HORIZONTAL 1
-Esta linha tem um strokeweight (grossura) de 12.
+LINHA 2 - HORIZONTAL 1
+Esta e a próxima linha tem um strokeweight (grossura) de 17.
+Como é horizontal o x1 é (0) e o y1 está perto mais acima do meio da composição (height/2-71.98). O x2 está na ponta da composição logo é a largura (width) e o y2 é o mesmo que y1 por ser horizontal.
+
+LINHA 3 - HORIZONTAL 2
+o x1 e x2 é a mesma lógica da linha anterior, x1 (0) e x2 (width) e o y1 entre eles é um pouco mais abaixo do meio da composição logo é (height/2+118.04) e o y2 será o mesmo valor.
+
+LINHA 4 - HORIZONTAL 3
+Esta linha e as próximas têm um strokeweight (grossura) de 12. (Podia ter posto juntamente com a primeira linha mas inicialmente tinha as linhas organizadas pela quantidade de horizontais e verticais e por isso deixei assim)
+Esta linha começa a meio ligeiramente mais à esquerda da composição logo o x1 é (width/2-33). O y1 é (height/2+355.69) por estar novamente perto à baixo do meio da composição e mais o valor adicional, o y2 será o mesmo valor. O x2 é 614 por ser a largura direta.
+
+LINHA 5 - VERTICAL 2
+O x1 desta linha, sendo ela a que está à volta do retângulo azul, está posicionado à direita da linha central (width/2+214) o x2 será o mesmo valor. o y1 é a altura por acompanhar o x1 e o y2 é (width/2+118.04) por ser até ao fim da àrea inferior da composição.
+
+LINHA 6 - VERTICAL 3
+O x1 e x2 desta linha são (width/2-319.02) por começar quase junto à linha lateral esquerda da composição, apesar de se puder por o valor direto sem fazer a dividir. O y1 acompanha o x1 novamente (height) e o y2 é (width/2+118.04) sendo da mesma medida que a linha anterior por partilhar a mesma altura até ao fim da composição.
+
+##### Textura
+
+Compreendi que queria fazer uma textura aproximada à da composição e havia a opção do noise ou ruído e percebi que não se adaptava. Pensei em usar uma imagem com textura leve. Fui à procura de um site que me ajudasse neste sentido e encontrei o https://www.fffuel.co/nnnoise/ que cria um svg aleatório que se pode ir modificando dependendo das necessidades visuais do ruído.
+
+ Ao ter personalizado a imagem para ficar deveras parecida à composição do enunciado, fui ao p5js novamente e fui à parte da imagem https://p5js.org/reference/p5/image/ Exprimentei utilizar este código mas havia algo que não funcionava e o facto de eu ter o function setup() em vez do async function setup() e ter mudado não tinha funcionado. Para além disto, a minha textura era svg, logo o VS Code não conseguia perceber o ficheiro mesmo que pusesse na minha pasta. Quando converti a imagem para jpg e pus na pasta sobrepôs tudo com a opacidade toda e não ficou como eu queria.
+
+Ao ter todos estes erros e não ter muita informação disponibilizada sobre este assunto através da minha pesquisa recorri ao Ecosia A.I (que curiosamente recorre a energia solar) para me ajudar a compreender o que faltava ou o que estava incorreto.
+
+1. Ele informou-me que faltava o let nnoise; no topo do código porque é o que me faz carregar a imagem e eu tinha como let img; como diz no site, mas assim ele não consegue recorrer ao ficheiro da minha imagem.
+
+2. Dentro do async sugeriu usar o try para ver se dava erro por estar sempre a carregar e não funcionar. E adicionou o catch (error) para receber um erro na consola caso não desse, o que me acabou por ajudar mais tarde porque quando testei no p5js ele deu-me este erro "Erro ao carregar imagem" por eu não conseguir introduzir o ficheiro na pasta do site. 
+
+3. Sugeriu-me utilizar o drawingContext.globalAlpha que ao verificar com o site do p5js funcionava como uma variável que acessa a parte do desenho do canvas. Esta varíavel tinha a opção de escolher entre 0.0 a 1.0 que neste caso é a opacidade, o que me ajudou bastante a regular a opacidade da textura e não ficar demasiado forte: escolhi o 0.6 de opacidade. 
+Dentro desta varíavel tem se coordenadas simples, como é uma camada de textura de imagem ela sobrepõe a composição toda logo, image (nnoise) que é o que se associa ao let lá de cima para carregar (0,0,width,height) que é até aos limites todos da composição.
+
+Por ser iniciante a código achei que faria sentido deixar assim e não complicar demasiado para ser um código de demonstração e não ficar tudo misturado. Porém, sempre tive interesse em perceber em como conseguiria escolher a textura para não ficar nas linhas mas como está dentro do async afeta tudo. Neste sentido, a textura ficou um pouco diferente por sobrepor as linhas e por isso tive tanto cuidado com a opacidade para não se notar tanto. 
+
+Exprimentei mudar a ordem das linhas com os retângulos, mudar a forma que o código estava estruturado mas acho que a única opção teria sido mexer com as coordernadas com muito detalhe. Gostaria de conseguir aprender nos projetos ou demonstrações de código consequentes a como brincar com a sobreposição de imagem no 3D ou com a sombra.
